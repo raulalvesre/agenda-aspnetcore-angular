@@ -1,0 +1,57 @@
+<form
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  [formGroup]="formulario"
+  (ngSubmit)="onSubmit()"
+  style="height: 100%"
+>
+  <mat-card>
+    <mat-card-title>LOGIN</mat-card-title>
+    <mat-card-content>
+      <app-input-field
+        formControlName="username"
+        id="username"
+        label="Username"
+      ></app-input-field>
+
+      <app-error-msg
+        #erroUsername
+        [control]="getFormControl('username')"
+        label="Username"
+      ></app-error-msg>
+      <div
+        *ngIf="!erroUsername.errorMessage"
+        style="height: 30px !important"
+      ></div>
+      <app-input-field
+        formControlName="password"
+        id="password"
+        label="Senha"
+        type="password"
+      >
+      </app-input-field>
+      <app-error-msg
+        #erroSenha
+        [control]="getFormControl('password')"
+        label="Senha"
+      ></app-error-msg>
+      <div
+        *ngIf="!erroSenha.errorMessage"
+        style="height: 30px !important"
+      ></div>
+
+      <mat-error *ngIf="apiError !== null" style="text-align: center">
+        {{ apiError }}
+      </mat-error>
+      <div *ngIf="apiError === null" style="height: 30px !important"></div>
+
+      <mat-card-actions>
+        <div fxFlex fxLayoutAlign="end start">
+          <button mat-flat-button color="primary" type="submit">ENTRAR</button>
+        </div>
+      </mat-card-actions>
+
+      <!-- <app-form-debug [form]="formulario"></app-form-debug> -->
+    </mat-card-content>
+  </mat-card>
+</form>

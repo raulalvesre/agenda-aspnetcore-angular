@@ -1,0 +1,10 @@
+<mat-form-field appearance="outline" fxFill [fxFlex]="fxFlex">
+  <mat-label [attr.for]="id">{{ label }}</mat-label>
+  <input 
+    matInput
+    [id]="id" 
+    [type]="type"
+    [readonly]="isReadOnly"
+    [(ngModel)]="value"
+  />
+</mat-form-field>

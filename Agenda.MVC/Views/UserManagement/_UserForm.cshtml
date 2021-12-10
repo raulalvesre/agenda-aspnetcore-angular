@@ -1,0 +1,65 @@
+@model UserFormViewModel
+
+@{
+  var roles = TempData["Roles"] as SelectList;
+}
+
+<div id="modalForm" class="modal-content">
+
+  <h4 class="card-title center-align" style="font-weight:bold">
+    @(Model == null ? "Adicionar usuário" : "Atualizar usuário")
+    <br />
+  </h4>
+
+  @using (Html.BeginForm("Index", "UserManagement", FormMethod.Post)) {
+
+    @Html.HiddenFor(u => u.Id)
+
+    <div class="row">
+      <div class="input-field col m6">
+        @Html.LabelFor(u => u.Username, htmlAttributes: new { @class = "active" })
+        @Html.TextBoxFor(u => u.Username, new { @class = "validate" })
+        @Html.ValidationMessageFor(u => u.Username, null, new { @class = "validation-message" })
+      </div>
+
+      <div class="input-field col m6">
+        @Html.LabelFor(u => u.RoleId, htmlAttributes: new { @class = "active" })
+        @Html.DropDownListFor(u => u.RoleId, roles)
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col m6">
+        @Html.LabelFor(u => u.Name, htmlAttributes: new { @class = "active" })
+        @Html.TextBoxFor(u => u.Name, htmlAttributes: new { @class = "validate" })
+        @Html.ValidationMessageFor(u => u.Name, null, new { @class = "validation-message" })
+      </div>
+
+      <div class="input-field col m6">
+        @Html.LabelFor(u => u.Email, htmlAttributes: new { @class = "active" })
+        @Html.TextBoxFor(u => u.Email, htmlAttributes: new { @class = "validate" })
+        @Html.ValidationMessageFor(u => u.Email, null, new { @class = "validation-message" })
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col m12">
+        @Html.LabelFor(u => u.Password, htmlAttributes: new { @class = "active" })
+        @Html.PasswordFor(u => u.Password, htmlAttributes: new { @class = "validate" })
+        @Html.ValidationMessageFor(u => u.Password, null, new { @class = "validation-message" })
+      </div>
+    </div>
+
+    <div class="row center-align validation-message">
+      @Html.ValidationSummary(true)
+    </div>
+    <div class="row">
+      <div class="modal-footer">
+        <button class="waves-effect waves-light btn" style="width: 100%;" type="submit">
+          @(Model == null ?
+                "ADICIONAR" : "ATUALIZAR")
+        </button>
+      </div>
+    </div>
+  }
+</div>

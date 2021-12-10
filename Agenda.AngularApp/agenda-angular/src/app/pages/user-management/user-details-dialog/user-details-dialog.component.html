@@ -1,0 +1,46 @@
+<h1 mat-dialog-title style="text-align: center; font-weight: bold">DETALHES</h1>
+<mat-dialog-content style="height: calc(100% - 85px)">
+  <div fxLayout="column" fxLayoutAlign="space-between">
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field appearance="outline" fxFlex="20">
+        <mat-label>ID</mat-label>
+        <input matInput [value]="user.id" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="79">
+        <mat-label>Username</mat-label>
+        <input matInput [value]="user.username" readonly />
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field appearance="outline" fxFlex="49">
+        <mat-label>Nome</mat-label>
+        <input matInput [value]="user.name" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="49">
+        <mat-label>Email</mat-label>
+        <input matInput [value]="user.email" readonly />
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field appearance="outline" fxFlex="49">
+        <mat-label>Data criação</mat-label>
+        <input
+          matInput
+          [value]="user.creationDate | date: 'dd/MM/yyyy HH:mm:ss'"
+          readonly
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="49">
+        <mat-label>Data última atualização</mat-label>
+        <input
+          matInput
+          [value]="(user.lastUpdateDate | date: 'dd/MM/yyyy HH:mm:ss') || 'NUNCA ATUALIZADO'"
+          readonly
+        />
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end">
+  <button mat-flat-button color="primary" mat-dialog-close>OK</button>
+</mat-dialog-actions>

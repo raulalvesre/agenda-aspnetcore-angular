@@ -1,0 +1,132 @@
+@model ContactViewModel;
+
+<div class="row">
+  <div class="col m12">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title" style="font-weight:bold">Contato</span>
+        <dl>
+          <dt>
+            ID:
+          </dt>
+          <dd>
+            @Html.DisplayFor(model => model.Id)
+          </dd>
+          <dt>
+            Nome:
+          </dt>
+          <dd>
+            @Html.DisplayFor(model => model.Name)
+          </dd>
+          <dt>
+            Data criação:
+          </dt>
+          <dd>
+            @(Model.CreationDate.ToLocalTime())
+          </dd>
+          <dt>
+            Data última atualização:
+          </dt>
+          <dd>
+            @(Model.LastUpdateDate == null ? "-" : ((DateTime)Model.LastUpdateDate).ToLocalTime())
+          </dd>
+          <dt>
+            <br />
+            Telefones:
+          </dt>
+          <dd>
+            <table class="table">
+              <tr>
+                <th>ID</th>
+                <th>Número</th>
+                <th>Descrição</th>
+                <th>Tipo</th>
+                <th>Data criação</th>
+                <th>Data da última atualização</th>
+              </tr>
+              @foreach (var tel in Model.Telephones) {
+                <tr>
+                  <td>
+                    @Html.DisplayFor(t => tel.Id)
+                  </td>
+                  <td>
+                    @Html.DisplayFor(t => tel.TelephoneFormatted)
+                  </td>
+                  <td>
+                    @Html.DisplayFor(t => tel.Description)
+                  </td>
+                  <td>
+                    @Html.DisplayFor(t => tel.Type)
+                  </td>
+                  <td>
+                    @(tel.CreationDate.ToLocalTime())
+                  </td>
+                  <td>
+                    @(tel.LastUpdateDate == null ? "-" : ((DateTime)tel.LastUpdateDate).ToLocalTime())
+                  </td>
+                </tr>
+              }
+            </table>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (User.IsInRole("ADMIN")) {
+  <div class="row">
+    <div class="col m12">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title" style="font-weight:bold">Dono</span>
+          <dl>
+            <dt>
+              ID:
+            </dt>
+            <dd>
+              @Html.DisplayFor(model => model.Owner.Id)
+            </dd>
+            <dt>
+              Role:
+            </dt>
+            <dd>
+              @Html.DisplayFor(model => model.Owner.Role)
+            </dd>
+            <dt>
+              Username:
+            </dt>
+            <dd>
+              @Html.DisplayFor(model => model.Owner.Username)
+            </dd>
+            <dt>
+              Nome:
+            </dt>
+            <dd>
+              @Html.DisplayFor(model => model.Owner.Name)
+            </dd>
+            <dt>
+              Email:
+            </dt>
+            <dd>
+              @Html.DisplayFor(model => model.Owner.Email)
+            </dd>
+            <dt>
+              Data criação:
+            </dt>
+            <dd>
+              @(Model.Owner.CreationDate.ToLocalTime())
+            </dd>
+            <dt>
+              Data última atualização:
+            </dt>
+            <dd>
+              @(Model.Owner.LastUpdateDate == null ? "-" :
+                        ((DateTime)Model.Owner.LastUpdateDate).ToLocalTime())
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+}

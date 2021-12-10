@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>DELETAR CONTATO?</h2>
+<mat-dialog-content style="height: calc(100% - 85px)"
+  >Tem certeza que deseja deletar esse contato
+  permanentemente?</mat-dialog-content
+>
+<mat-dialog-actions
+  fxLayoutAlign="end stretch"
+  style="height: calc(100% - 96px); max-height: unset"
+>
+  <button
+    mat-flat-button
+    color="primary"
+    [mat-dialog-close]="true"
+    (click)="deleteContact()"
+  >
+    SIM
+  </button>
+  <button mat-flat-button mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>

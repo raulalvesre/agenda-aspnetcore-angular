@@ -1,0 +1,110 @@
+@model ContactFormViewModel;
+
+@{
+  var users = (SelectList)ViewBag.users;
+  var telephoneTypes = (SelectList)ViewBag.telephoneTypes;
+
+  var contactNameDivClass = User.IsInRole("ADMIN") ? "input-field col m6" : "input-field col m12";
+  var controllerName = User.IsInRole("ADMIN") ? "ContactManagement" : "Phonebook";
+}
+
+<div class="row">
+  <div class="col m12">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title" style="font-weight:bold">
+          @(Model.Id == 0 ? "Adicionar Contato" : "Editar Contato")
+        </span>
+        @using (Html.BeginForm("Form", controllerName, FormMethod.Post)) {
+          @Html.HiddenFor(c => c.Id)
+
+          <div class="row">
+
+            <div class="@contactNameDivClass">
+              @Html.LabelFor(c => c.Name, htmlAttributes: new { @class = "active" })
+              @Html.TextBoxFor(c => c.Name, new { @class = "validate" })
+              @Html.ValidationMessageFor(c => c.Name, null, new { @class = "validation-message" })
+            </div>
+
+            @if (User.IsInRole("ADMIN")) {
+              <div class="input-field col m6">
+                @Html.LabelFor(c => c.OwnerId, new { @class = "active" })
+                @Html.DropDownListFor(c => c.OwnerId, (SelectList)ViewBag.users)
+              </div>
+            }
+
+          </div>
+
+          <div class="row">
+            <div class="col m12">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Número</th>
+                    <th>Descrição</th>
+                    <th>Tipo</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                @Html.LabelFor(c => c.Telephones)
+                @for (int i = 0; i < Model.Telephones.Count; i++) {
+                  <tr class="telephone-row">
+                    <td id="telephone-type-@i">
+                      @Html.TextBoxFor(c => c.Telephones[i].TelephoneNumber, new { @class = "validate telephone-number" })
+                      @Html.ValidationMessageFor(c => c.Telephones[i].TelephoneNumber, null, new { @class = "validation-message" })
+                    </td>
+                    <td>
+                      @Html.TextBoxFor(c => c.Telephones[i].Description, new { @class = "validate" })
+                      @Html.ValidationMessageFor(c => c.Telephones[i].Description, null, new { @class = "validation-message" })
+                    </td>
+                    <td id="telephone-type-@i">
+                      @Html.DropDownListFor(c => c.Telephones[i].Type, telephoneTypes, htmlAttributes: new { @class = "validate telephone-type" })
+                    </td>
+                    <td>
+                      <button name="option" class="waves-effect waves-light btn-flat cancel" type="submit"
+                              value="removeTelephone|@i">
+                        <i class="material-icons">delete</i>
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </table>
+              <br />
+              <div class="row center-align validation-message">
+                @Html.ValidationSummary(true)
+              </div>
+              <button name="option" class="right waves-effect waves-light btn cancel" type="submit" value="addTelephone">
+                Adicionar telefone
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <a href="@Url.Action("Index", controllerName)"
+               class="btn option-btn waves-effect waves-light right">Cancelar</a>
+            <button name="option" class="btn option-btn waves-effect waves-light right" type="submit" value="save">
+              @(Model.Id == 0 ? "Adicionar" : "Atualizar")
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+  <script src="~/js/contactFormValidationScripts.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('select').formSelect();
+
+      $('.telephone-type').change(function (event) {
+        var currentRow = $(this).attr('name').split("[")[1][0];
+        $('#Telephones_' + currentRow + '__TelephoneNumber').val('');
+      });
+    });
+  </script>
+}

@@ -1,0 +1,10 @@
+<mat-toolbar id="nav-bar" color="primary" fxLayoutAlign="space-between center">
+  <span>Agenda</span>
+  <span class="spacer"></span>
+  <button mat-button *ngIf="userRole === 'ADMIN'" routerLink="/gerenciamento-contatos/">Contatos</button>
+  <button mat-button *ngIf="userRole === 'ADMIN'" routerLink="/gerenciamento-usuarios/">Usuários</button>
+  <button mat-button *ngIf="userRole === 'STANDARD USER'" routerLink="/agenda/">Agenda</button>
+  <button  mat-button (click)="logOut()"><mat-icon>logout</mat-icon></button>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

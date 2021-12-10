@@ -1,0 +1,36 @@
+.mat-drawer-container {
+  height: 89vh;
+  background-color: white;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-paginator {
+  display: flex;
+  position: absolute !important;
+  bottom: 0px !important;
+  justify-content: right !important;
+  position: sticky !important;
+}
+
+.mat-fab-bottom-right {
+  top: auto !important;
+  right: 20px !important;
+  bottom: 10px !important;
+  left: auto !important;
+  position: fixed !important;
+}
+
+section {
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.sticky {
+  bottom: 0px;
+  position: -webkit-sticky;
+  position: sticky;
+}

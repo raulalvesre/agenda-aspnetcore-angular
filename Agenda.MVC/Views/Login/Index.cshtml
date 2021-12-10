@@ -1,0 +1,46 @@
+@model LoginViewModel
+
+<div class="row">
+  <div class="col offset-m3 m6">
+    <div class="card">
+      <div class="card-content">
+        <h3 class="center-align">Login</h3>
+
+        @using (Html.BeginForm("Index", "Login", FormMethod.Post)) {
+
+          <div class="row">
+            <div class="input-field center-align col m12">
+              @Html.TextBoxFor(u => u.Username, htmlAttributes: new { @class = "validate" })
+              @Html.LabelFor(u => u.Username)
+              @Html.ValidationMessageFor(u => u.Username, null, new { @class = "validation-message" })
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field center-align col m12">
+              @Html.PasswordFor(u => u.Password, htmlAttributes: new { @class = "validate" })
+              @Html.LabelFor(u => u.Password)
+              @Html.ValidationMessageFor(u => u.Password, null, new { @class = "validation-message" })
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="center-align validation-message">
+              @Html.ValidationSummary(true)
+            </div>
+          </div>
+
+          <div class="row">
+            <button class="btn right waves-effect waves-light" type="submit" name="Login">
+              ENTRAR
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts{
+  @await Html.PartialAsync("_ValidationScriptsPartial");
+}

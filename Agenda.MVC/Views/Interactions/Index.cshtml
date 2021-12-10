@@ -1,0 +1,66 @@
+@model IEnumerable<InteractionViewModel>
+
+@{
+    var currentPage = (int)ViewBag.currentPage;
+    var totalPages = (int)ViewBag.totalPages;
+    var untilPage = currentPage + 17 > totalPages ? totalPages : currentPage + 17;
+}
+
+@using (Html.BeginForm("Index", "Interactions", FormMethod.Get)) {
+  <div class="row">
+
+    <h4 class="center-align" style="font-weight:bold">
+      Interações
+    </h4>
+
+    @foreach (var interaction in Model) {
+      <div class="col m4">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title center-align" style="font-weight:bold">
+              @interaction.Id
+            </span>
+            <dl>
+              <dt>ID Usuário:</dt>
+              <dd>@interaction.WhoInteracted.Id</dd>
+              <dt>Tipo:</dt>
+              <dd>@interaction.Type</dd>
+              <dt>Mensagem:</dt>
+              <dd>@interaction.Message</dd>
+              <dt>Criado em:</dt>
+              <dd>@interaction.CreationDate.ToLocalTime()</dd>
+              <dt>Atualizado em:</dt>
+              <dd>
+                @(interaction.LastUpdateDate == null ? "-" :
+                        ((DateTime)interaction.LastUpdateDate).ToLocalTime())
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (Model.Any()) {
+      <div class="col m12 center">
+        <ul class="pagination">
+          <li>
+            <button @(currentPage == 1 ? "disabled" : "") type="submit" name="page" value="1">
+              <i class="material-icons" type="submit">chevron_left</i>
+            </button>
+          </li>
+          @for (int i = currentPage; i <= untilPage; i++) {
+            <li class="@(currentPage == i ? "active" : "")">
+              <button type="submit" name="page" value="@i">@i</button>
+            </li>
+          }
+          <li>
+            <button @(currentPage == totalPages ? "disabled" : "") type="submit" name="page" value="@totalPages">
+              <i class="material-icons" typeof="submit">chevron_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    }
+
+  </div>
+}

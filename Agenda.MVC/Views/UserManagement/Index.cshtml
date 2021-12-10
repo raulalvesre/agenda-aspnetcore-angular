@@ -1,0 +1,169 @@
+@model UserIndexViewModel
+
+@{
+  var currentPage = (int)ViewBag.currentPage;
+  var totalPages = (int)ViewBag.totalPages;
+}
+
+@*REMOVE USER MODAL*@
+<div id="removeUserModal" class="modal">
+  <div class="modal-content">
+    <h5 class="card-title" style="font-weight:bold">
+      Remover usuário
+    </h5>
+    <p>Tem certeza que deseja remover esse usuário permanentemente?</p>
+    <div class="modal-footer">
+      <a id="removeUserModalConfirmBtn" href="#!" class="waves-effect waves-light btn">
+        SIM
+      </a>
+      <a href="#!" class="waves-effect waves-light btn close-modal-btn modal-close">
+        NÃO
+      </a>
+    </div>
+  </div>
+</div>
+
+@using (Html.BeginForm("Index", "UserManagement", FormMethod.Get)) {
+  <div class="row">
+
+    <h4 class="center-align" style="font-weight:bold">
+      Usuários
+    </h4>
+
+    @foreach (var user in Model.Users) {
+      <div class="col m4">
+        <div class="card user-card">
+          <div class="card-content" style="font-size:9px">
+            <span class="card-title center-align" style="font-weight:bold">
+              @user.Username
+            </span>
+            <dl>
+              <dt>ID:</dt>
+              <dd> @user.Id</dd>
+              <dt>Nome:</dt>
+              <dd>@user.Name</dd>
+              <dt>Role:</dt>
+              <dd>@user.Role</dd>
+              <dt>Email:</dt>
+              <dd>@user.Email</dd>
+              <dt>Criado em:</dt>
+              <dd>@user.CreationDate.ToLocalTime()</dd>
+              <dt>Atualizado em:</dt>
+              <dd> @(user.LastUpdateDate == null ? "-" : ((DateTime)user.LastUpdateDate).ToLocalTime())</dd>
+            </dl>
+            <div class="card-action">
+              <a data-userId="@user.Id" href="#!" class="removeUserIcn right">
+                <i class="material-icons">delete</i>
+              </a>
+              <a data-userId="@user.Id" href="#!" class="editUserIcn right">
+                <i class="material-icons">edit</i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+  </div>
+
+  @if (Model.Users.Any()) {
+    <div class="col m12 center">
+      <ul class="pagination">
+        <li>
+          <button @(currentPage == 1 ? "disabled" : "") type="submit" name="page" value="1">
+            <i class="material-icons" type="submit">chevron_left</i>
+          </button>
+        </li>
+        @for (int i = 1; i <= totalPages; i++) {
+          <li class="@(currentPage == i ? "active" : "")">
+            <button type="submit" name="page" value="@i">@i</button>
+          </li>
+        }
+        <li>
+          <button @(currentPage == totalPages ? "disabled" : "") type="submit" name="page" value="@totalPages">
+            <i class="material-icons" typeof="submit">chevron_right</i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  }
+}
+
+<div class="fixed-action-btn">
+  <a id="addUserBtn" class="btn-floating btn-large waves-effect waves-light red">
+    <i class="material-icons">add</i>
+  </a>
+</div>
+
+@*USER FORM MODAL*@
+<div id="userFormModal" class="modal">
+  <div id="user-form-container">
+    @if (Model.ModalForm != null) {
+      @await Html.PartialAsync("_UserForm", Model.ModalForm)
+    }
+  </div>
+</div>
+
+@section Scripts{
+  @await Html.PartialAsync("_ValidationScriptsPartial")
+  <script src="~/js/userFormValidationScripts.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('.fixed-action-btn').floatingActionButton();
+      $('.modal').modal();
+      $('select').formSelect();
+
+      $('#addUserBtn').click(function () {
+        var url = '/gerenciamento-usuarios/form';
+
+        $.get(url, function (data) {
+          $('#user-form-container').html(data);
+          $('#userFormModal').modal('open');
+          $('select').formSelect();
+          $.validator.unobtrusive.parse($("form"));
+        });
+      });
+
+      $('.editUserIcn').click(function () {
+        var userId = $(this).attr("data-userId");
+        var url = '/gerenciamento-usuarios/form?id=';
+
+        $.get(url + userId, function (data) {
+          $('#user-form-container').html(data);
+          $('#userFormModal').modal('open');
+          $('select').formSelect();
+          $.validator.unobtrusive.parse($("form"));
+        });
+      });
+
+      $('.removeUserIcn').click(function () {
+        var userId = $(this).attr("data-userId");
+
+        $('#removeUserModal').modal('open');
+        $('#removeUserModalConfirmBtn').attr('data-userId', userId);
+      });
+
+      $('#removeUserModalConfirmBtn').click(function () {
+        var userId = $(this).attr("data-userId");
+        var url = '/gerenciamento-usuarios/remover?id=' + userId;
+
+        $.post(url, function (response) {
+          window.location = response;
+        });
+      });
+
+      $('.userPageNumber').click(function () {
+        var pageNumber = $(this).attr("data-page-number");
+        var url = '/gerenciamento-usuarios?page=' + pageNumber;
+
+        $.get(url, function (a) {
+        });
+      });
+
+      if ($('#modalForm').length > 0) {
+        $('#userFormModal').modal('open');
+      }
+    });
+  </script>
+}

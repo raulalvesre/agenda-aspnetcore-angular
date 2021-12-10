@@ -1,0 +1,45 @@
+<div class="search-container">
+  <div style="text-align: center"><mat-icon>search</mat-icon></div>
+  <form fxLayout="column" [formGroup]="searchParamsForm">
+    <mat-form-field appearance="outline" fxFill>
+      <mat-label>ID Usuário</mat-label>
+      <input 
+        matInput
+        id="idUsuarioSP" 
+        formControlName="idUsuario"
+        type="number"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFill>
+      <mat-label>ID Contato</mat-label>
+      <input 
+        matInput
+        id="idContatoSP" 
+        formControlName="idContato"
+        type="text"
+      />
+    </mat-form-field>
+    <app-input-field
+      formControlName="nomeContato"
+      id="nomeContatoSP"
+      label="Nome"
+      [fxFlex]="100"
+    >
+    </app-input-field>
+    <app-input-field
+      formControlName="ddd"
+      id="dddSP"
+      label="DDD"
+      [fxFlex]="100"
+    >
+    </app-input-field>
+
+    <app-input-field
+      formControlName="numeroTelefone"
+      id="numeroTelefoneSP"
+      label="Número"
+      [fxFlex]="100"
+    >
+    </app-input-field>
+  </form>
+</div>

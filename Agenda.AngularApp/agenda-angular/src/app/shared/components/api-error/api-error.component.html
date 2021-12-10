@@ -1,0 +1,5 @@
+<mat-error *ngIf="apiError.hasError" fxLayout="column" fxLayoutAlign="center center" style="padding: 20px 0">
+  <div *ngFor="let error of apiError.errors">
+    {{error.propertyName}}: {{error.errorMessage}}
+  </div>
+</mat-error>

@@ -1,0 +1,196 @@
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+dt {
+  float: left;
+  clear: left;
+  margin-right: 5px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+dd {
+  margin-left: 0px;
+  font-size: 16px;
+}
+
+hr.solid {
+  border-top: 2px solid #bbb;
+}
+
+.material-icons {
+  color: #ee6e73;
+}
+
+.pagination li.active button {
+  color: #fff;
+  background-color: #ee6e73;
+}
+
+.pagination li button {
+  color: #444;
+  border: none;
+  display: inline-block;
+  font-size: 1.2rem;
+  padding: 0 10px;
+  line-height: 30px;
+  cursor: pointer;
+  background: none;
+}
+
+.pagination li button[disabled] {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.card-footer button {
+  color: #444;
+  border: none;
+  display: inline-block;
+  padding: 10px 24px 24px 0px;
+  cursor: pointer;
+  background: none;
+}
+
+.btn {
+  background-color: #ee6e73;
+  margin: 10px
+}
+
+  .btn:active {
+    background-color: white;
+    color: #ee6e73;
+  }
+
+  .btn:focus {
+    background-color: white;
+    color: #ee6e73;
+  }
+
+  .btn:hover {
+    background-color: white;
+    color: #ee6e73;
+  }
+
+.close-modal-btn {
+  background-color: white;
+  color: #ee6e73;
+}
+
+.close-modal-btn:active {
+  background-color: #ee6e73;
+  color: white;
+}
+
+.close-modal-btn:focus {
+  background-color: #ee6e73;
+  color: white;
+}
+
+.close-modal-btn:hover {
+  background-color: #ee6e73;
+  color: white;
+}
+
+button:active {
+  background-color: white;
+  color: #ee6e73;
+}
+
+button:focus {
+  background-color: white;
+  color: #ee6e73;
+}
+
+button:hover {
+  background-color: white;
+  color: #ee6e73;
+}
+
+.card-content dl dt {
+  font-size: 14px;
+}
+
+.card-content dl dd {
+  font-size: 14px;
+}
+
+.validation-message {
+    font-size: 13px;
+    color: red;
+}

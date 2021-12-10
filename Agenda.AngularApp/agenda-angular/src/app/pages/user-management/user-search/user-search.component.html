@@ -1,0 +1,43 @@
+<div class="search-container">
+  <div style="text-align: center"><mat-icon>search</mat-icon></div>
+  <form [formGroup]="searchParamsForm" fxLayout="column" style="height: 100%">
+
+    <mat-form-field appearance="outline" fxFill>
+      <mat-label>ID Usuário</mat-label>
+      <input 
+        matInput
+        id="idUsuarioSP" 
+        formControlName="id"
+        type="number"
+      />
+    </mat-form-field>
+
+    <app-input-field
+      formControlName="username"
+      id="usernameSP"
+      label="Username"
+    ></app-input-field>
+
+    <mat-form-field fxFlex="40" appearance="outline">
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="roleId">
+        <mat-option></mat-option>
+        <mat-option [value]="role.id" *ngFor="let role of roles">
+          {{ role.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <app-input-field
+      formControlName="name"
+      id="nameSP"
+      label="Nome"
+    ></app-input-field>
+
+    <app-input-field
+      formControlName="email"
+      id="emailSP"
+      label="Email"
+    ></app-input-field>
+  </form>
+</div>

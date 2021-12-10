@@ -1,0 +1,159 @@
+@model PhonebookViewModel
+
+@{
+  Layout = "_PhonebookLayout";
+}
+
+@using (Html.BeginForm("Index", "Phonebook", FormMethod.Get)) {
+  <div class="row">
+    <div class="col m3">
+      <div class="card">
+        <div class="card-content">
+
+          <h5 class="center-align" style="font-weight:bold">Busca</h5>
+
+          <div class="input-field m1">
+            @Html.LabelFor(m => m.SearchParameters.IdContato, htmlAttributes: new { @class = "active" })
+            @Html.TextBoxFor(m => m.SearchParameters.IdContato, new { @class = "validate" })
+          </div>
+
+          <div class="input-field m1">
+            @Html.LabelFor(m => m.SearchParameters.NomeContato, htmlAttributes: new { @class = "active" })
+            @Html.TextBoxFor(m => m.SearchParameters.NomeContato, new { @class = "validate" })
+          </div>
+
+          <div class="input-field m1">
+            @Html.LabelFor(m => m.SearchParameters.Ddd, htmlAttributes: new { @class = "active" })
+            @Html.TextBoxFor(m => m.SearchParameters.Ddd, new { @class = "validate" })
+          </div>
+
+          <div class="input-field m1">
+            @Html.LabelFor(m => m.SearchParameters.NumeroTelefone, htmlAttributes: new { @class = "active" })
+            @Html.TextBoxFor(m => m.SearchParameters.NumeroTelefone, new { @class = "validate" })
+          </div>
+
+        </div>
+        <div class="card-footer right-align">
+          <button><i class="material-icons">search</i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col m7">
+      <br />
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Primeiro telefone</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @foreach (var contact in Model.Contacts) {
+            <tr>
+              <td>@contact.Id</td>
+              <td>@contact.Name</td>
+              <td>
+                @(contact.Telephones.FirstOrDefault() == null ? "-" :
+                        contact.Telephones.FirstOrDefault().TelephoneFormatted)
+              </td>
+              <td>
+                <a data-contactId="@contact.Id"
+                   href="@Url.Action("Details", "Phonebook", new { id = contact.Id })">
+                  <i class="material-icons">visibility</i>
+                </a>
+                <a data-contactId="@contact.Id" href="@Url.Action("Form", "Phonebook", new { id = contact.Id })"
+                   class="editContactIcn"><i class="material-icons">edit</i></a>
+                <a data-contactId="@contact.Id" href="#!" class="removeContactIcn">
+                  <i class="material-icons">delete</i>
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="fixed-action-btn">
+      <a href="@Url.Action("Form", "Phonebook", new { id = 0 })"
+         class="btn-floating btn-large waves-effect waves-light red">
+        <i class="material-icons">add</i>
+      </a>
+    </div>
+
+    @if (Model.Contacts.Any()) {
+      <div class="col m12 center">
+        <ul class="pagination">
+          <li>
+            <button @(Model.SearchParameters.Page == 1 ? "disabled" : "") type="submit" name="SearchParameters.Page"
+                    value="@(Model.SearchParameters.Page - 1)">
+              <i class="material-icons" type="submit">chevron_left</i>
+            </button>
+          </li>
+          @for (int i = 1; i <= Model.SearchParameters.HowManyPages; i++) {
+            <li class="@(Model.SearchParameters.Page == i ? "active" : "")">
+              <button type="submit" name="SearchParameters.Page" value="@i">@i</button>
+            </li>
+          }
+          <li>
+            <button @(Model.SearchParameters.Page == Model.SearchParameters.HowManyPages ? "disabled" : "")
+                    type="submit" name="SearchParameters.Page" value="@(Model.SearchParameters.Page + 1)">
+              <i class="material-icons" typeof="submit">chevron_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    }
+
+  </div>
+}
+
+@*REMOVE CONTACT MODAL*@
+<div id="removeContactModal" class="modal">
+  <div class="modal-content">
+    <h5 class="card-title" style="font-weight:bold">
+      Remover contato
+    </h5>
+    <p>Tem certeza que deseja remover esse contato permanentemente?</p>
+    <div class="modal-footer">
+      <a id="removeContactModalConfirmBtn" href="#!" class="waves-effect waves-light btn">
+        SIM
+      </a>
+      <a href="#!" class="waves-effect waves-light btn close-modal-btn modal-close">
+        NÃO
+      </a>
+    </div>
+  </div>
+</div>
+
+@section Scripts
+{
+  <script>
+    $(document).ready(function () {
+      $('.modal').modal();
+      $('.collapsible').collapsible
+      $('.fixed-action-btn').floatingActionButton();
+
+      $('.removeContactIcn').click(function () {
+        var contactId = $(this).attr('data-contactId');
+
+        $('#removeContactModal').modal('open');
+        $('#removeContactModalConfirmBtn').attr('data-contactId', contactId);
+      });
+
+      $('#removeContactModalConfirmBtn').click(function () {
+        var contactId = $(this).attr('data-contactId');
+        var url = '/agenda/remover?id=' + contactId;
+
+        $.post(url, function (response) {
+          window.location = response;
+        });
+      });
+    });
+  </script>
+}

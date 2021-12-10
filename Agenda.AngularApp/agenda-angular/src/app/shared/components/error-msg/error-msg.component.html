@@ -1,0 +1,4 @@
+<mat-error *ngIf="errorMessage !== null; else espaco">
+  {{ errorMessage }}
+</mat-error>
+<ng-template #espaco><!-- <div style="height: 30px;"></div> --></ng-template>

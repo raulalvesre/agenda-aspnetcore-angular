@@ -1,0 +1,93 @@
+<h3 *ngIf="user === null; else updateUserTitle" mat-dialog-title>
+  Adicionar Usuário
+</h3>
+<ng-template #updateUserTitle>
+  <h3 mat-dialog-title>Atualizar Usuário</h3>
+  </ng-template>
+<mat-dialog-content>
+  <form
+    fxLayout="column"
+    [formGroup]="formulario"
+    style="height: 100%"
+  >
+    <div fxLayout="row" fxLayoutAlign="space-between" fxFill>
+      <app-input-field
+        formControlName="username"
+        id="username"
+        label="Username"
+        [fxFlex]="95"
+      ></app-input-field>
+      <mat-form-field appearance="outline" fxFlex="40">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option [value]="role.id" *ngFor="let role of roles">
+            {{ role.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+    </div>
+    <app-error-msg
+        #erroUsername
+        [control]="getFormControl('username')"
+        label="Username"
+    ></app-error-msg>
+    <div
+    *ngIf="!erroUsername.errorMessage"
+    style="height: 30px !important"
+     ></div>
+
+    <app-input-field
+      formControlName="name"
+      id="name"
+      label="Nome"
+      [fxFlex]="100"
+    ></app-input-field>
+    <app-error-msg
+      #erroName
+      [control]="getFormControl('name')"
+      label="Nome"
+    ></app-error-msg>
+    <div
+      *ngIf="!erroName.errorMessage"
+      style="height: 30px !important"
+     ></div>
+
+    <app-input-field
+      formControlName="email"
+      id="email"
+      label="Email"
+      [fxFlex]="100"
+    ></app-input-field>
+    <app-error-msg
+      #erroEmail
+      [control]="getFormControl('email')"
+      label="Email"
+    ></app-error-msg>
+    <div
+      *ngIf="!erroEmail.errorMessage"
+      style="height: 30px !important"
+     ></div>
+
+    <app-input-field
+      formControlName="password"
+      id="password"
+      label="Senha"
+      type="password"
+      [fxFlex]="100"
+    ></app-input-field>
+    <app-error-msg
+      #erroPassword
+      [control]="getFormControl('password')"
+      label="Senha"
+    ></app-error-msg>
+    <div
+      *ngIf="!erroPassword.errorMessage"
+      style="height: 30px !important"
+     ></div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end">
+  <button mat-flat-button color="primary" (click)="onSubmit()">Submit</button>
+  <button mat-flat-button mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>

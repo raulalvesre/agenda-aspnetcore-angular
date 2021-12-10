@@ -1,0 +1,171 @@
+<h3 *ngIf="contact === null; else updateContactTitle" mat-dialog-title>
+  Adicionar Contato
+</h3>
+<ng-template #updateContactTitle
+  ><h3 mat-dialog-title>Atualizar Contato</h3></ng-template
+>
+<mat-dialog-content style="height: calc(100% - 85px);">
+  <form fxLayout="column" [formGroup]="formulario" style="height: 100%">
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <div fxLayout="column" fxFlex="66">
+        <app-input-field
+          formControlName="name"
+          id="name"
+          label="Nome"
+        ></app-input-field>
+        <app-error-msg
+          #erroName
+          [control]="getFormControl('name')"
+          label="Nome"
+        ></app-error-msg>
+        <div
+          *ngIf="!erroName.errorMessage"
+          style="height: 30px !important"
+        ></div>
+      </div>
+
+      <div fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Dono</mat-label>
+          <input
+            type="text"
+            placeholder="Selecione o dono"
+            matInput
+            formControlName="owner"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option
+              *ngFor="let user of filteredUsers | async"
+              [value]="user"
+            >
+              {{ user.username }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-error *ngIf="formulario.get('owner')?.hasError('invalidUser')">
+          Selecione um usuário da lista
+        </mat-error>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-between"></div>
+
+    <ng-container formArrayName="telephones">
+      <mat-table [dataSource]="telephones.controls">
+        <ng-container matColumnDef="telephoneNumber">
+          <mat-header-cell *matHeaderCellDef fxFlex="33"
+            >Telefone</mat-header-cell
+          >
+          <mat-cell
+            *matCellDef="let tel; let index = index"
+            [formGroup]="getTelephoneFormGroup(index)"
+          >
+            <div fxLayout="column">
+              <div style="height: 5px"></div>
+              <app-input-field
+                [fxFlex]="80"
+                formControlName="telephoneNumber"
+              ></app-input-field>
+              <app-error-msg
+                #erroTelephoneNumber
+                [control]="getTelephoneFormControl(index, 'telephoneNumber')"
+                label="Telefone"
+              ></app-error-msg>
+              <div
+                *ngIf="!erroTelephoneNumber.errorMessage"
+                class="spacer"
+              ></div>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef fxFlex="27"
+            >Descrição</mat-header-cell
+          >
+          <mat-cell
+            *matCellDef="let tel; let index = index"
+            [formGroup]="getTelephoneFormGroup(index)"
+          >
+            <div fxLayout="column">
+              <div style="height: 5px"></div>
+              <app-input-field
+                [fxFlex]="80"
+                formControlName="description"
+              ></app-input-field>
+              <app-error-msg
+                #erroDescription
+                [control]="getTelephoneFormControl(index, 'description')"
+                label="Descrição"
+              ></app-error-msg>
+              <div *ngIf="!erroDescription.errorMessage" class="spacer"></div>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <mat-header-cell *matHeaderCellDef>Tipo</mat-header-cell>
+          <mat-cell
+            *matCellDef="let tel; let index = index"
+            [formGroup]="getTelephoneFormGroup(index)"
+          >
+            <div fxLayout="column" fxFlex="70">
+              <div style="height: 8px"></div>
+              <mat-form-field appearance="outline">
+                <mat-select formControlName="type">
+                  <mat-option
+                    [value]="type.id"
+                    *ngFor="let type of telephoneTypes"
+                  >
+                    {{ type.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div class="spacer"></div>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell
+            fxFlex="10"
+            *matCellDef="let tel; let index = index"
+            [formGroup]="getTelephoneFormGroup(index)"
+          >
+          <div fxLayout="column">
+            <button
+              fxFill
+              mat-icon-button
+              color="primary"
+              (click)="deleteTelephone(index)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+            <div class="spacer"></div>
+          </div>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row
+          *matRowDef="let myRowData; columns: displayedColumns"
+        ></mat-row>
+      </mat-table>
+    </ng-container>
+
+    <div fxFlex fxLayoutAlign="end start" style="padding-top: 20px">
+      <button mat-flat-button color="primary" (click)="addTelephone()">
+        Adicionar telefone
+      </button>
+    </div>
+  </form>
+  <!-- <app-form-debug [form]="formulario"></app-form-debug> -->
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end stretch">
+  <div fxFlex fxLayoutAlign="end start">
+    <button mat-flat-button color="primary" (click)="onSubmit()">Submit</button>
+    <button mat-flat-button mat-dialog-close>Cancelar</button>
+  </div>
+</mat-dialog-actions>

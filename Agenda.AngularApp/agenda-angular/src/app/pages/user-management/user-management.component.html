@@ -1,0 +1,69 @@
+<mat-drawer-container fxFlexLayout="row">
+  <mat-drawer mode="side" opened style="width: 20vw">
+    <app-user-search
+      [roles]="userRoles"
+      [searchParamsForm]="searchParamsForm"
+    ></app-user-search>
+  </mat-drawer>
+  <section fxLayout="column" fxLayoutAlign="space-between none">
+    <table mat-table [dataSource]="users">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Role</th>
+        <td mat-cell *matCellDef="let user">{{ user.role }}</td>
+      </ng-container>
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef>Username</th>
+        <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let user">
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="openUserDetailsDialog(user)"
+          >
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="openUserFormDialog(user)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="openUserDeletionDialog(user.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [length]="totalUsers"
+      pageSize="9"
+      (page)="getUserPage()"
+      showFirstLastButtons
+      sticky
+    ></mat-paginator>
+  </section>
+  <button
+    mat-fab
+    color="primary"
+    class="mat-fab-bottom-right"
+    (click)="openUserFormDialog()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</mat-drawer-container>

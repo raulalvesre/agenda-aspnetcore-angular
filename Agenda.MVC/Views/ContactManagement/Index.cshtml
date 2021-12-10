@@ -1,0 +1,126 @@
+@model IEnumerable<ContactViewModel>
+
+@{
+    var currentPage = (int)ViewBag.currentPage;
+    var totalPages = (int)ViewBag.totalPages;
+    var untilPage = currentPage + 17 > totalPages ? totalPages : currentPage + 17;
+}
+
+@*REMOVE CONTACT MODAL*@
+<div id="removeContactModal" class="modal">
+  <div class="modal-content">
+    <h5 class="card-title" style="font-weight:bold">
+      Remover contato
+    </h5>
+    <p>Tem certeza que deseja remover esse contato permanentemente?</p>
+    <div class="modal-footer">
+      <a id="removeContactModalConfirmBtn" href="#!" class="waves-effect waves-light btn">
+        SIM
+      </a>
+      <a href="#!" class="waves-effect waves-light btn close-modal-btn modal-close">
+        NÃO
+      </a>
+    </div>
+  </div>
+</div>
+
+@using (Html.BeginForm("Index", "ContactManagement", FormMethod.Get)) {
+  <div class="row">
+    <div class="col m12">
+
+      <h4 class="center-align" style="font-weight:bold">Contatos</h4>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Primeiro telefone</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @foreach (var contact in Model) {
+            <tr>
+              <td>@contact.Id</td>
+              <td>@contact.Name</td>
+              <td>
+                @(contact.Telephones.FirstOrDefault() == null ? "-" :
+                        contact.Telephones.FirstOrDefault().TelephoneFormatted)
+              </td>
+              <td>
+                <a data-contactId="@contact.Id"
+                   href="@Url.Action("Details", "ContactManagement", new { id = contact.Id })">
+                  <i class="material-icons">visibility</i>
+                </a>
+                <a data-contactId="@contact.Id"
+                   href="@Url.Action("Form", "ContactManagement", new { id = contact.Id })"
+                   class="editContactIcn"><i class="material-icons">edit</i></a>
+                <a data-contactId="@contact.Id" href="#!" class="removeContactIcn">
+                  <i class="material-icons">delete</i>
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  @if (Model.Any()) {
+    <div class="col m12 center">
+      <ul class="pagination">
+        <li>
+          <button @(currentPage == 1 ? "disabled" : "") type="submit" name="page" value="1">
+            <i class="material-icons" type="submit">chevron_left</i>
+          </button>
+        </li>
+        @for (int i = 1; i <= totalPages; i++) {
+          <li class="@(currentPage == i ? "active" : "")">
+            <button type="submit" name="page" value="@i">@i</button>
+          </li>
+        }
+        <li>
+          <button @(currentPage == totalPages ? "disabled" : "") type="submit" name="page" value="@totalPages">
+            <i class="material-icons" typeof="submit">chevron_right</i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  }
+}
+
+<div class="fixed-action-btn">
+  <a href="@Url.Action("Form", "ContactManagement", new { id = 0 })"
+     class="btn-floating btn-large waves-effect waves-light red">
+    <i class="material-icons">add</i>
+  </a>
+</div>
+
+@section Scripts
+{
+  <script>
+    $(document).ready(function () {
+      $('.modal').modal();
+      $('.fixed-action-btn').floatingActionButton();
+
+      $('.removeContactIcn').click(function () {
+        var contactId = $(this).attr('data-contactId');
+
+        $('#removeContactModal').modal('open');
+        $('#removeContactModalConfirmBtn').attr('data-contactId', contactId);
+      });
+
+      $('#removeContactModalConfirmBtn').click(function () {
+        var contactId = $(this).attr('data-contactId');
+        var url = '/gerenciamento-contatos/remover?id=' + contactId;
+
+        $.post(url, function (response) {
+          window.location = response;
+        });
+      });
+    });
+  </script>
+}

@@ -1,0 +1,115 @@
+<h2 mat-dialog-title style="text-align: center; font-weight: bold">DETALHES</h2>
+<mat-dialog-content style="height: calc(100% - 85px) !important">
+  <div fxLayout="column" fxLayoutAlign="space-between">
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field appearance="outline" fxFlex="10">
+        <mat-label>ID</mat-label>
+        <input matInput [value]="contact.id" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="30">
+        <mat-label>Nome</mat-label>
+        <input matInput [value]="contact.name" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="22">
+        <mat-label>Data criação</mat-label>
+        <input
+          matInput
+          [value]="contact.creationDate | date: 'dd/MM/yyyy HH:mm:ss'"
+          readonly
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="22">
+        <mat-label>Data última atualização</mat-label>
+        <input
+          matInput
+          [value]="contact.lastUpdateDate | date: 'dd/MM/yyyy HH:mm:ss'"
+          readonly
+        />
+      </mat-form-field>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" style="width: 100%">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let telephone">{{ telephone.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+        <td mat-cell *matCellDef="let telephone">{{ telephone.type }}</td>
+      </ng-container>
+      <ng-container matColumnDef="phoneNumber">
+        <th mat-header-cell *matHeaderCellDef>Número</th>
+        <td mat-cell *matCellDef="let telephone">
+          {{ telephone.telephoneFormatted }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+        <td mat-cell *matCellDef="let telephone">
+          {{ telephone.description }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="creationDate">
+        <th mat-header-cell *matHeaderCellDef>Data de criação</th>
+        <td mat-cell *matCellDef="let telephone">
+          {{ telephone.creationDate | date: "dd/MM/yyyy HH:mm:ss" }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="lastUpdateDate">
+        <th mat-header-cell *matHeaderCellDef>Última atualização</th>
+        <td mat-cell *matCellDef="let telephone">
+          {{ telephone.lastUpdateDate | date: "dd/MM/yyyy HH:mm:ss" }}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+    </table>
+    <br />
+    <mat-divider></mat-divider>
+    <br />
+    <h4 style="text-align: center; font-weight: bold">DONO</h4>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field appearance="outline" fxFlex="10">
+        <mat-label>ID</mat-label>
+        <input matInput [value]="contact.owner.id" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="20">
+        <mat-label>Role</mat-label>
+        <input matInput [value]="contact.owner.role" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="30">
+        <mat-label>Username</mat-label>
+        <input matInput [value]="contact.owner.username" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="22">
+        <mat-label>Nome</mat-label>
+        <input matInput [value]="contact.owner.name" readonly />
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput [value]="contact.owner.email" readonly />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Data criação</mat-label>
+        <input
+          matInput
+          [value]="contact.owner.creationDate | date: 'dd/MM/yyyy HH:mm:ss'"
+          readonly
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Data última atualização</mat-label>
+        <input
+          matInput
+          [value]="contact.owner.lastUpdateDate | date: 'dd/MM/yyyy HH:mm:ss'"
+          readonly
+        />
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end">
+  <button mat-flat-button color="primary" mat-dialog-close>FECHAR</button>
+</mat-dialog-actions>
